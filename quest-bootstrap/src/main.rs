@@ -1,8 +1,13 @@
+use anyhow::{Context, Result};
+use directories::ProjectDirs;
 use std::env;
 use std::process;
-use directories::ProjectDirs;
 
-fn main() {
+mod downloads;
+
+// -> Result<()> allows using the '?' operator 
+// for clean error handling in the main function.
+fn main() -> Result<()> {
     let os = env::consts::OS;
     let arch = env::consts::ARCH;
 
@@ -46,9 +51,12 @@ fn main() {
         } 
         println!("directory created successfully!");
     } else {
-        println!("Directory already exists, Ready to launch or update");
+      println!("Directory already exists, Ready to launch or update");  
     }
 
+    downloads::download_required_tools(data_dir, os, arch)?;
+
+    Ok(())
 }
 
 // goal:
