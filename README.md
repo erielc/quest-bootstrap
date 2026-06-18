@@ -1,3 +1,6 @@
+<div align="center>
+    <img src = "images/logos/quest-bootstrap-logo.png" width"1400" height="250" alt="API" />
+</div>
 # quest-bootstrap
 
 Downloads Python, Git, and GLPK installers for your OS so QuESt prerequisites
