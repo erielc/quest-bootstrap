@@ -1,7 +1,6 @@
 use anyhow::{Context, Result};
 use directories::ProjectDirs;
 use std::env;
-use std::process;
 
 mod downloads;
 
@@ -14,15 +13,8 @@ fn main() -> Result<()> {
     println!("Current OS: {}", os);
     println!("Current ARCH: {}", arch);
 
-    // establish cross platform app directory 
-    // parameters: qualifier, org, app name
-    let proj_dirs = match ProjectDirs::from("com", "Sandia", "quest-bootstrap") {
-        Some(dirs) => dirs, 
-        None => {
-            eprintln!("Error: Could not determine vaild home directory for this OS");
-            process::exit(1);
-        }
-    }; 
+    let proj_dirs = ProjectDirs::from("com", "Sandia", "quest-bootstrap")
+        .expect("Could not determine valid home directory");
 
     // grab app data directory
     // UNIX: ~/.local/share/quest-bootstrap
@@ -31,33 +23,15 @@ fn main() -> Result<()> {
 
     println!("Installation target mapped to: {}", data_dir.display());
 
-    // determine workflow based off OS
-    if os == "windows" {
-        println!("Need to download Windows .zip for Python..");
-    } else if os == "macos" {
-        println!("Need to download macOS tarball for Python..");
-    } else if os == "linux" {
-        println!("Need to download Linux tarball for Python..");
+    if data_dir.exists() {
+        println!("Directory already exists, ready to launch or update");
     } else {
-        eprintln!("Unsupported OS: {}", os);
-        process::exit(1);
-    }
-
-    // create directory if it doesn't exist yet
-    if !data_dir.exists() {
-        if let Err(e) = std::fs::create_dir_all(data_dir) {
-            eprintln!("Failed to create installation directory: {}", e);
-            process::exit(1);
-        } 
-        println!("directory created successfully!");
-    } else {
-      println!("Directory already exists, Ready to launch or update");  
+        std::fs::create_dir_all(data_dir)
+            .context("Failed to create installation directory")?;
+        println!("Directory created successfully");
     }
 
     downloads::download_required_tools(data_dir, os, arch)?;
 
     Ok(())
 }
-
-// goal:
-// map out download URLs for python runtime (ie. python, git, glpk)
