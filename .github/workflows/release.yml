@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            ext: ""
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            ext: ""
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            ext: ""
+          - os: windows-latest
+            target: x86_64-pc-windows-gnu
+            ext: ".exe"
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: ${{ matrix.target }}
+
+      - run: cargo build --release --target ${{ matrix.target }}
+        working-directory: quest-bootstrap
+
+      - name: Rename binary
+        shell: bash
+        run: |
+          mv quest-bootstrap/target/${{ matrix.target }}/release/quest-bootstrap${{ matrix.ext }} \
+             quest-bootstrap${{ matrix.ext }}
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: quest-bootstrap${{ matrix.ext }}
