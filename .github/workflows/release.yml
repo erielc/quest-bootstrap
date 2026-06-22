@@ -1,4 +1,6 @@
 name: Release
+permissions:
+  contents: write
 
 on:
   push:
@@ -40,6 +42,6 @@ jobs:
           mv quest-bootstrap/target/${{ matrix.target }}/release/quest-bootstrap${{ matrix.ext }} \
              quest-bootstrap${{ matrix.ext }}
 
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           files: quest-bootstrap${{ matrix.ext }}
