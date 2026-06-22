@@ -1,6 +1,4 @@
 name: Release
-permissions:
-  contents: write
 
 on:
   push:
@@ -40,8 +38,25 @@ jobs:
         shell: bash
         run: |
           mv quest-bootstrap/target/${{ matrix.target }}/release/quest-bootstrap${{ matrix.ext }} \
-             quest-bootstrap${{ matrix.ext }}
+             quest-bootstrap-${{ matrix.target }}${{ matrix.ext }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quest-bootstrap-${{ matrix.target }}
+          path: quest-bootstrap-${{ matrix.target }}${{ matrix.ext }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - run: find release-assets -type f -exec mv -v {} . \;
 
       - uses: softprops/action-gh-release@v3
         with:
-          files: quest-bootstrap${{ matrix.ext }}
+          files: quest-bootstrap-*
