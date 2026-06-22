@@ -40,7 +40,7 @@ jobs:
           mv quest-bootstrap/target/${{ matrix.target }}/release/quest-bootstrap${{ matrix.ext }} \
              quest-bootstrap-${{ matrix.target }}${{ matrix.ext }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: quest-bootstrap-${{ matrix.target }}
           path: quest-bootstrap-${{ matrix.target }}${{ matrix.ext }}
