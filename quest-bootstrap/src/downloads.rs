@@ -45,8 +45,8 @@ fn get_downloads(os: &str, arch: &str) -> Result<Vec<Download>> {
         ("windows", "x86_64") => Ok(vec![
             Download {
                 name: "Python",
-                url: "https://www.python.org/ftp/python/3.12.4/python-3.12.4-amd64.exe",
-                file: "python-3.12.4-amd64.exe",
+                url: "https://www.python.org/ftp/python/3.13.9/python-3.13.9-amd64.exe",
+                file: "python-3.13.9-amd64.exe",
             },
             Download {
                 name: "Git",
@@ -63,13 +63,8 @@ fn get_downloads(os: &str, arch: &str) -> Result<Vec<Download>> {
         ("macos", "x86_64") | ("macos", "aarch64") => Ok(vec![
             Download {
                 name: "Python",
-                url: "https://www.python.org/ftp/python/3.12.4/python-3.12.4-macos11.pkg",
-                file: "python-3.12.4-macos11.pkg",
-            },
-            Download {
-                name: "Git",
-                url: "https://sourceforge.net/projects/git-osx-installer/files/latest/download",
-                file: "git-installer.dmg",
+                url: "https://www.python.org/ftp/python/3.13.9/python-3.13.9-macos11.pkg",
+                file: "python-3.13.9-macos11.pkg",
             },
             Download {
                 name: "GLPK",
@@ -81,8 +76,8 @@ fn get_downloads(os: &str, arch: &str) -> Result<Vec<Download>> {
         ("linux", "x86_64") => Ok(vec![
             Download {
                 name: "Python",
-                url: "https://www.python.org/ftp/python/3.12.4/Python-3.12.4.tgz",
-                file: "Python-3.12.4.tgz",
+                url: "https://www.python.org/ftp/python/3.13.9/Python-3.13.9.tgz",
+                file: "Python-3.13.9.tgz",
             },
             Download {
                 name: "Git",

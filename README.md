@@ -4,9 +4,10 @@
 
 # quest-bootstrap
 
-Downloads Python, Git, and GLPK installers for your OS so QuESt prerequisites
-are ready to install. No system admin rights needed — everything goes into a
-per-user data directory.
+Downloads Python and GLPK installers for your OS (plus Git on Windows/Linux)
+so QuESt prerequisites are ready to install. On macOS, Git is installed via
+Homebrew instead. No system admin rights needed — everything goes into
+`~/Downloads/quest-dependencies`.
 
 ## Usage
 
@@ -14,23 +15,23 @@ per-user data directory.
 cargo run
 ```
 
-The tool detects your OS and architecture, creates an app data directory, and
-downloads the required installers into it.
+The tool detects your OS and architecture, creates a `~/Downloads/quest-dependencies`
+directory, and downloads the required installers into it.
 
 ### Where files go
 
-| OS      | Default path                                    |
-|---------|--------------------------------------------------|
-| Linux   | `~/.local/share/quest-bootstrap/`               |
-| macOS   | `~/Library/Application Support/quest-bootstrap/` |
-| Windows | `%APPDATA%\Sandia\quest-bootstrap\`             |
+| OS      | Default path                              |
+|---------|--------------------------------------------|
+| Linux   | `~/Downloads/quest-dependencies/`         |
+| macOS   | `~/Downloads/quest-dependencies/`         |
+| Windows | `~\Downloads\quest-dependencies\`         |
 
 ## Downloads per platform
 
 | Tool  | Windows                          | macOS                      | Linux                    |
 |-------|-----------------------------------|----------------------------|--------------------------|
 | Python| `.exe` installer                  | `.pkg` installer           | Source `.tgz`            |
-| Git   | `.exe` installer                  | `.dmg` installer           | Source `.tar.gz`         |
+| Git   | `.exe` installer                  | `brew install git`         | Source `.tar.gz`         |
 | GLPK  | `.zip` (Windows GLPK)            | Source `.tar.gz`           | Source `.tar.gz`         |
 
 After downloading, run each installer manually or use your system package
