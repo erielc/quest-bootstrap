@@ -22,10 +22,10 @@ cargo run
 
 ### Download Precompiled Binaries
 You can download precompiled binaries from the **Releases** page:
-* **macOS / Linux**: Download the `.tar.gz` archive. This preserves the executable permission so you can simply extract it and run the binary.
+* **macOS**: Download the `.zip` archive. When extracted, it yields `quest-bootstrap.command`. Because of the `.command` extension and preserved execution permissions, you can simply **double-click it** in Finder to run it directly inside Terminal!
 * **Windows**: Download the `.zip` archive or the `.exe` file.
 
-If you download the raw binary directly on macOS/Linux instead of the `.tar.gz` archive, you will need to give it execute permissions manually in your terminal before running:
+If you download the raw binary directly on macOS/Linux instead of the compressed archives, it will download as a regular document. You will need to make it executable manually in your terminal before running:
 ```bash
 chmod +x quest-bootstrap-aarch64-apple-darwin
 ./quest-bootstrap-aarch64-apple-darwin

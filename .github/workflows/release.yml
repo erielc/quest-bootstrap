@@ -12,12 +12,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            ext: ""
-          - os: macos-latest
-            target: x86_64-apple-darwin
-            ext: ""
           - os: macos-latest
             target: aarch64-apple-darwin
             ext: ""
@@ -50,11 +44,19 @@ jobs:
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
             ARCHIVE_NAME="quest-bootstrap-${{ matrix.target }}.zip"
             powershell -Command "Compress-Archive -Path '$SRC_BIN' -DestinationPath '$ARCHIVE_NAME' -Force"
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            ARCHIVE_NAME="quest-bootstrap-${{ matrix.target }}.zip"
+            mkdir -p bin_temp
+            # Renaming to .command allows macOS users to run the binary by double-clicking it
+            cp "$SRC_BIN" "bin_temp/${BINARY_NAME}.command"
+            chmod +x "bin_temp/${BINARY_NAME}.command"
+            zip -j "$ARCHIVE_NAME" "bin_temp/${BINARY_NAME}.command"
+            rm -rf bin_temp
           else
             ARCHIVE_NAME="quest-bootstrap-${{ matrix.target }}.tar.gz"
-            # Use a temporary directory to avoid naming conflicts with the quest-bootstrap directory
             mkdir -p bin_temp
             cp "$SRC_BIN" "bin_temp/$BINARY_NAME"
+            chmod +x "bin_temp/$BINARY_NAME"
             tar -czf "$ARCHIVE_NAME" -C bin_temp "$BINARY_NAME"
             rm -rf bin_temp
           fi
