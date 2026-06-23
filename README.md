@@ -4,19 +4,32 @@
 
 # quest-bootstrap
 
-Downloads Python and GLPK installers for your OS (plus Git on Windows/Linux)
-so QuESt prerequisites are ready to install. On macOS, Git is installed via
-Homebrew instead. No system admin rights needed — everything goes into
-`~/Downloads/quest-dependencies`.
+Downloads Python, Git, and GLPK installers for your OS to prepare the QuESt prerequisites. 
+
+On macOS:
+* It automatically checks for and installs **Homebrew** if it is not already present.
+* It installs **Git** and **GLPK** via Homebrew.
+* It downloads the official **Python** `.pkg` installer to `~/Downloads/quest-dependencies/`.
+
+On Windows & Linux, downloads are saved locally to `~/Downloads/quest-dependencies/` without requiring administrator privileges.
 
 ## Usage
 
+If building from source:
 ```bash
 cargo run
 ```
 
-The tool detects your OS and architecture, creates a `~/Downloads/quest-dependencies`
-directory, and downloads the required installers into it.
+### Download Precompiled Binaries
+You can download precompiled binaries from the **Releases** page:
+* **macOS / Linux**: Download the `.tar.gz` archive. This preserves the executable permission so you can simply extract it and run the binary.
+* **Windows**: Download the `.zip` archive or the `.exe` file.
+
+If you download the raw binary directly on macOS/Linux instead of the `.tar.gz` archive, you will need to give it execute permissions manually in your terminal before running:
+```bash
+chmod +x quest-bootstrap-aarch64-apple-darwin
+./quest-bootstrap-aarch64-apple-darwin
+```
 
 ### Where files go
 
@@ -32,10 +45,9 @@ directory, and downloads the required installers into it.
 |-------|-----------------------------------|----------------------------|--------------------------|
 | Python| `.exe` installer                  | `.pkg` installer           | Source `.tgz`            |
 | Git   | `.exe` installer                  | `brew install git`         | Source `.tar.gz`         |
-| GLPK  | `.zip` (Windows GLPK)            | Source `.tar.gz`           | Source `.tar.gz`         |
+| GLPK  | `.zip` (Windows GLPK)            | `brew install glpk`        | Source `.tar.gz`         |
 
-After downloading, run each installer manually or use your system package
-manager to install the tools.
+After downloading, run each installer manually or use your system package manager to install the tools.
 
 ### Linux quick install
 

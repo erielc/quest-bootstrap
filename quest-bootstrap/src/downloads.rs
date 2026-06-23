@@ -66,29 +66,6 @@ fn get_downloads(os: &str, arch: &str) -> Result<Vec<Download>> {
                 url: "https://www.python.org/ftp/python/3.13.9/python-3.13.9-macos11.pkg",
                 file: "python-3.13.9-macos11.pkg",
             },
-            Download {
-                name: "GLPK",
-                url: "https://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
-                file: "glpk-5.0.tar.gz",
-            },
-        ]),
-
-        ("linux", "x86_64") => Ok(vec![
-            Download {
-                name: "Python",
-                url: "https://www.python.org/ftp/python/3.13.9/Python-3.13.9.tgz",
-                file: "Python-3.13.9.tgz",
-            },
-            Download {
-                name: "Git",
-                url: "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.45.2.tar.gz",
-                file: "git-2.45.2.tar.gz",
-            },
-            Download {
-                name: "GLPK",
-                url: "https://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
-                file: "glpk-5.0.tar.gz",
-            },
         ]),
 
         _ => bail!("unsupported platform: os={}, arch={}", os, arch),

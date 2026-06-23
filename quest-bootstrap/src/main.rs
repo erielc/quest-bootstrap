@@ -6,8 +6,22 @@ use std::process::Command;
 
 mod downloads;
 
-fn ensure_homebrew() -> Result<()> {
+fn find_brew_path() -> String {
     if Command::new("which").arg("brew").output().is_ok_and(|o| o.status.success()) {
+        return "brew".to_string();
+    }
+    if PathBuf::from("/opt/homebrew/bin/brew").exists() {
+        return "/opt/homebrew/bin/brew".to_string();
+    }
+    if PathBuf::from("/usr/local/bin/brew").exists() {
+        return "/usr/local/bin/brew".to_string();
+    }
+    "brew".to_string()
+}
+
+fn ensure_homebrew() -> Result<()> {
+    // Check if brew can be found or resolved
+    if find_brew_path() != "brew" || Command::new("which").arg("brew").output().is_ok_and(|o| o.status.success()) {
         println!("Homebrew already installed");
         return Ok(());
     }
@@ -15,9 +29,7 @@ fn ensure_homebrew() -> Result<()> {
     println!("Homebrew not found. Installing Homebrew...");
     let status = Command::new("/bin/bash")
         .arg("-c")
-        .arg(
-            "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh",
-        )
+        .arg("NONINTERACTIVE=1 /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"")
         .status()
         .context("Failed to run Homebrew install script")?;
 
@@ -29,7 +41,8 @@ fn ensure_homebrew() -> Result<()> {
 }
 
 fn ensure_brew_installed(name: &str) -> Result<()> {
-    let status = Command::new("brew")
+    let brew_path = find_brew_path();
+    let status = Command::new(&brew_path)
         .arg("list")
         .arg(name)
         .output()
@@ -41,7 +54,7 @@ fn ensure_brew_installed(name: &str) -> Result<()> {
     }
 
     println!("Installing {} via Homebrew...", name);
-    let status = Command::new("brew")
+    let status = Command::new(&brew_path)
         .arg("install")
         .arg(name)
         .status()
@@ -79,6 +92,7 @@ fn main() -> Result<()> {
     if os == "macos" {
         ensure_homebrew()?;
         ensure_brew_installed("git")?;
+        ensure_brew_installed("glpk")?;
     }
 
     Ok(())
