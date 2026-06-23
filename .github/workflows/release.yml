@@ -52,10 +52,11 @@ jobs:
             powershell -Command "Compress-Archive -Path '$SRC_BIN' -DestinationPath '$ARCHIVE_NAME' -Force"
           else
             ARCHIVE_NAME="quest-bootstrap-${{ matrix.target }}.tar.gz"
-            # Copy to temp file so the tar extraction yields a clean binary name
-            cp "$SRC_BIN" "$BINARY_NAME"
-            tar -czf "$ARCHIVE_NAME" "$BINARY_NAME"
-            rm "$BINARY_NAME"
+            # Use a temporary directory to avoid naming conflicts with the quest-bootstrap directory
+            mkdir -p bin_temp
+            cp "$SRC_BIN" "bin_temp/$BINARY_NAME"
+            tar -czf "$ARCHIVE_NAME" -C bin_temp "$BINARY_NAME"
+            rm -rf bin_temp
           fi
           
           # Rename the raw binary for direct download
