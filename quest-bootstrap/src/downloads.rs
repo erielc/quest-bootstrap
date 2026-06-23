@@ -3,6 +3,7 @@ use reqwest::blocking::Client;
 use std::fs::File;
 use std::io::copy;
 use std::path::Path;
+use std::process::Command;
 
 pub struct Download {
     pub name: &'static str,
@@ -10,11 +11,44 @@ pub struct Download {
     pub file: &'static str,
 }
 
+fn is_tool_installed(name: &str) -> bool {
+    match name {
+        "Python" => {
+            Command::new("python3")
+                .arg("--version")
+                .output()
+                .is_ok_and(|o| o.status.success())
+                || Command::new("python")
+                    .arg("--version")
+                    .output()
+                    .is_ok_and(|o| o.status.success())
+        }
+        "Git" => {
+            Command::new("git")
+                .arg("--version")
+                .output()
+                .is_ok_and(|o| o.status.success())
+        }
+        "GLPK" => {
+            Command::new("glpsol")
+                .arg("--version")
+                .output()
+                .is_ok_and(|o| o.status.success())
+        }
+        _ => false,
+    }
+}
+
 pub fn download_required_tools(data_dir: &Path, os: &str, arch: &str) -> Result<()> {
     let items = get_downloads(os, arch)?;
     let client = Client::new();
 
     for item in items {
+        if is_tool_installed(item.name) {
+            println!("{} is already installed on the system. Skipping download.", item.name);
+            continue;
+        }
+
         let path = data_dir.join(item.file);
         println!("Downloading {}...", item.name);
         println!("  from: {}", item.url);
